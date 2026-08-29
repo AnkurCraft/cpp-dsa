@@ -60,12 +60,9 @@ compile_commands.json
 # vcpkg
 vcpkg_installed/
 
-# Debug information files
+# debug information files
 *.dwo
 
-# Test output & cache
+# test output & cache
 Testing/
 .cache/
-
-# VS Code
-.vscode/
