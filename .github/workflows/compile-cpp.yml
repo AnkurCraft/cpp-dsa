@@ -1,0 +1,28 @@
+name: Compile C++ examples
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install compiler
+        run: sudo apt-get update && sudo apt-get install -y g++
+      - name: Compile canonical examples
+        shell: bash
+        run: |
+          set -e
+          mkdir -p /tmp/cpp-dsa-build
+          find 00-Cpp-Fundamentals 02-Arrays 03-Strings 04-Searching 05-Sorting \
+               06-Linked-Lists 07-Stack 08-Queue 09-Hashing 10-Recursion \
+               11-Backtracking 12-Trees 13-BST 14-Heap 15-Greedy 16-Graphs \
+               17-Dynamic-Programming 18-Tries 19-Bit-Manipulation 20-Number-Theory \
+               21-Advanced-Data-Structures 22-Advanced-Algorithms Patterns \
+               -name '*.cpp' -print0 |
+          while IFS= read -r -d '' file; do
+            echo "Compiling $file"
+            g++ -std=c++17 -Wall -Wextra -pedantic "$file" -o "/tmp/cpp-dsa-build/$(echo "$file" | tr '/ ' '__' | sed 's/\.cpp$//')"
+          done
